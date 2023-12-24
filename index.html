@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test</title>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+</head>
+
+<body>
+  <div class="main-phrase">
+    <h1>До нового года осталось:</h1>
+  </div>
+  <div class="time-container">
+    <div class="time-unit-container">
+      <h1 class="time-amount" id="day-amount"></h1>
+      <h2 class="time-suffix" id="day-suffix"></h2>
+    </div>
+    <div class="time-unit-container">
+      <h1 class="time-amount" id="hour-amount"></h1>
+      <h2 class="time-suffix" id="hour-suffix"></h2>
+    </div>
+    <div class="time-unit-container">
+      <h1 class="time-amount" id="minute-amount"></h1>
+      <h2 class="time-suffix" id="minute-suffix"></h2>
+    </div>
+    <div class="time-unit-container">
+      <h1 class="time-amount" id="second-amount"></h1>
+      <h2 class="time-suffix" id="second-suffix"></h2>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <a href="https://vk.com/unit.usue" target="_blank" rel="noopener noreferrer">
+        <span>
+          <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16"
+            viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
+            <path fill="#ffffff"
+              d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z" />
+          </svg>
+        </span>
+        ЮНИТ</a>
+    </div>
+  </footer>
+</body>
+<style>
+  body {
+    background: black;
+  }
+
+  h1,
+  h2 {
+    color: white;
+  }
+
+  a {
+    font-size: 1.4em;
+    text-decoration: none;
+    color: white;
+  }
+
+  .main-phrase {
+    text-align: center;
+    padding-top: 3rem;
+    font-size: 2em;
+  }
+
+  .time-container {
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 3em;
+    flex-wrap: wrap;
+  }
+
+  .time-unit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 16rem;
+  }
+
+  .time-amount {
+    font-size: 6rem;
+    margin-bottom: 0;
+  }
+
+  .time-suffix {
+    font-size: 4rem;
+    margin-top: 1rem;
+  }
+
+  footer {
+    padding-top: 18rem;
+  }
+
+  .footer-container {
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    opacity: 40%;
+    gap: 4px;
+  }
+</style>
+
+<script>
+  function declOfNum(number, titles) {
+    const cases = [2, 0, 1, 1, 1, 2];
+    return titles[
+      number % 100 > 4 && number % 100 < 20
+        ? 2
+        : cases[number % 10 < 5 ? number % 10 : 5]
+    ];
+  }
+
+  function updateTime() {
+    const now = new dayjs()
+    const timeTillNewYear = newYear.diff(now, 'seconds')
+    const sInMinute = 60;
+    const sInHour = sInMinute * 60;
+    const sInDay = sInHour * 24;
+
+    const daysTillNewYear = Math.floor(timeTillNewYear / sInDay);
+    const leftAfterDays = timeTillNewYear % sInDay;
+    const daysWord = declOfNum(daysTillNewYear, ["день", "дня", "дней"]);
+
+    const hoursTillNewYear = Math.floor(leftAfterDays / sInHour);
+    const leftAfterHours = leftAfterDays % sInHour;
+    const hoursWord = declOfNum(hoursTillNewYear, ["час", "часа", "часов"]);
+
+    const minutesTillNewYear = Math.floor(leftAfterHours / sInMinute);
+    const minutesWord = declOfNum(minutesTillNewYear, [
+      "минута",
+      "минуты",
+      "минут",
+    ]);
+    const secondsTillNewYear = leftAfterHours % sInMinute;
+    const secondsWord = declOfNum(secondsTillNewYear, [
+      "секунда",
+      "секунды",
+      "секунд",
+    ]);
+
+    const absoluteSecondsWord = declOfNum(timeTillNewYear, [
+      "секунда",
+      "секунды",
+      "секунд",
+    ]);
+
+    dayAmount.innerHTML = daysTillNewYear
+    daySuffix.innerHTML = daysWord
+
+    hourAmount.innerHTML = hoursTillNewYear
+    hourSuffix.innerHTML = hoursWord
+
+    minuteAmount.innerHTML = minutesTillNewYear
+    minuteSuffix.innerHTML = minutesWord
+
+    secondAmount.innerHTML = secondsTillNewYear
+    secondSuffix.innerHTML = secondsWord
+  }
+
+  const newYear = new dayjs("2024-01-01 00:00")
+  const dayAmount = document.querySelector("#day-amount")
+  const daySuffix = document.querySelector("#day-suffix")
+
+  const hourAmount = document.querySelector("#hour-amount")
+  const hourSuffix = document.querySelector("#hour-suffix")
+
+  const minuteAmount = document.querySelector("#minute-amount")
+  const minuteSuffix = document.querySelector("#minute-suffix")
+
+  const secondAmount = document.querySelector("#second-amount")
+  const secondSuffix = document.querySelector("#second-suffix")
+
+  updateTime()
+  setInterval(updateTime, 1000)
+</script>
+
+</html>
